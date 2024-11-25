@@ -12,10 +12,23 @@
 		<meta property="og:description" content="test directory HTML page" />
 		<link type="image/png" rel="shortcut icon" href="https://sparxmaths.com/favicon-32x32.png" />
 		<script type="text/javascript" src="ModAPI.js"></script>
-                <script type="text/javascript" src="ModLoader.js"></script>
+		<script type="text/javascript" src="ModLoader.js"></script>
 		<script type="text/javascript" src="ModGUI.js"></script>
 		<script type="text/javascript" src="anvil.js"></script>
 		<script type="text/javascript" src="classes.js"></script>
+		<style>
+			#sparx-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 9999;
+				background: url('sparx.png') center center no-repeat;
+				background-size: cover;
+			}
+		</style>
 		<script type="text/javascript">
 			"use strict";
 			window.addEventListener("load", () => {
@@ -47,11 +60,41 @@
 						if(s) window.eaglercraftXOpts.joinServer = s;
 					}
 					
+					// Add Alt key detection
+					let altKeyPresses = 0;
+					let lastKeyPress = 0;
+					
+					document.addEventListener('keydown', function(event) {
+						if (event.key === 'Alt') {
+							event.preventDefault();
+							const currentTime = new Date().getTime();
+							
+							if (currentTime - lastKeyPress > 500) { // Reset if more than 500ms between presses
+								altKeyPresses = 1;
+							} else {
+								altKeyPresses++;
+							}
+							
+							lastKeyPress = currentTime;
+							
+							if (altKeyPresses === 3) {
+								toggleSparxOverlay();
+								altKeyPresses = 0;
+							}
+						}
+					});
+					
 					main();
 				}
 			});
+			
+			function toggleSparxOverlay() {
+				const overlay = document.getElementById('sparx-overlay');
+				overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
+			}
 		</script>
 	</head>
 	<body style="margin:0px;width:100vw;height:100vh;overflow:hidden;" id="game_frame">
+		<div id="sparx-overlay"></div>
 	</body>
 </html>
