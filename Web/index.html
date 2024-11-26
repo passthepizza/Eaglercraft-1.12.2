@@ -27,6 +27,7 @@
 				z-index: 9999;
 				background: url('sparx.png') center center no-repeat;
 				background-size: cover;
+				background-color: rgba(0,0,0,0.9);
 			}
 		</style>
 		<script type="text/javascript">
@@ -61,26 +62,10 @@
 					}
 					
 					// Add Alt key detection
-					let altKeyPresses = 0;
-					let lastKeyPress = 0;
-					
 					document.addEventListener('keydown', function(event) {
 						if (event.key === 'Alt') {
 							event.preventDefault();
-							const currentTime = new Date().getTime();
-							
-							if (currentTime - lastKeyPress > 500) { // Reset if more than 500ms between presses
-								altKeyPresses = 1;
-							} else {
-								altKeyPresses++;
-							}
-							
-							lastKeyPress = currentTime;
-							
-							if (altKeyPresses === 3) {
-								toggleSparxOverlay();
-								altKeyPresses = 0;
-							}
+							toggleSparxOverlay();
 						}
 					});
 					
